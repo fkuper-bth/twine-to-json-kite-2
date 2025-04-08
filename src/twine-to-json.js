@@ -19,6 +19,8 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+export default { twineToJSON };
+
 const STORY_TAG_NAME = 'tw-storydata';
 const PASSAGE_TAG_NAME = 'tw-passagedata';
 const FORMAT_TWINE = 'twine';
@@ -71,7 +73,7 @@ function processPassageElement(passageElement, format) {
         tags: passageMeta.tags,
         id: passageMeta.pid,
     };
-    result.text = passageElement.innerText.trim();
+    result.text = passageElement.textContent.trim();
     Object.assign(result, processPassageText(result.text, format));
     result.cleanText = sanitizeText(result.text, result.links, result.hooks, format);
     return result;

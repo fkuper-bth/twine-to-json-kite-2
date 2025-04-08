@@ -1,19 +1,23 @@
 {
-  "name": "twine-to-json",
-  "version": "0.0.6",
+  "name": "twine-to-json-kite-2",
+  "version": "0.0.1",
   "description": "Convert Twine stories to JSON for a variety of formats.",
   "scripts": {
     "build": "node ./src/build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./src/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jtschoonhoven/twine-to-json.git"
+    "url": "git+https://github.com/fkuper/twine-to-json-kite-2.git"
   },
   "author": "Jonathan Schoonhoven",
+  "contributors": ["Frederik Kuper"],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jtschoonhoven/twine-to-json/issues"
+    "url": "https://github.com/fkuper/twine-to-json-kite-2/issues"
   },
-  "homepage": "https://github.com/jtschoonhoven/twine-to-json#readme"
+  "homepage": "https://github.com/fkuper/twine-to-json-kite-2#readme",
+  "dependencies": {
+    "jsdom": "^26.0.0"
+  }
 }
