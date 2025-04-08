@@ -128,7 +128,24 @@ function extractCustomTagsAtIndex(passageText, currentIndex) {
     if (currentChar === '>' && nextChar === '>') {
         const customTag = getSubstringBetweenBrackets(passageText, currentIndex + 1, '>', '<');
         const original = passageText.substring(currentIndex, currentIndex + customTag.length + 4);
-        return { tag: customTag.trim(), original: original };
+        const customTagParts = customTag.split('|');
+        if (customTagParts.length > 3) {
+            throw new Error('Custom tag has too many parts');
+        }
+        if (customTagParts.length === 3) {
+            const type = "character_description";
+            const index = getSubstringBetweenBrackets(customTagParts[0].trim());
+            const action = getSubstringBetweenBrackets(customTagParts[1].trim());
+            const expression = getSubstringBetweenBrackets(customTagParts[2].trim());
+
+            return { type: type, index: index, action: action, expression: expression, original: original };
+        }
+        if (customTagParts.length === 2) {
+            const type = customTagParts[0].trim();
+            const name = getSubstringBetweenBrackets(customTagParts[1].trim());
+
+            return { type: type, name: name, original: original };
+        }
     }
 }
 
@@ -239,7 +256,7 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
     let currentIndex = startIndex || 0;
     let substring = '';
     if (string[currentIndex] !== openBracket) {
-        throw new Error('startIndex of getSubstringBetweenBrackets must correspond to an open bracket');
+        throw new Error(`startIndex of getSubstringBetweenBrackets must correspond to an open bracket, input: ${string}`);
     }
     while (currentIndex < string.length) {
         const currentChar = string[currentIndex];
