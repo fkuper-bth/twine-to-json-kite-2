@@ -75,33 +75,42 @@ function processPassageElement(passageElement, format) {
     };
     result.text = passageElement.textContent.trim();
     Object.assign(result, processPassageText(result.text, format));
-    result.cleanText = sanitizeText(result.text, result.links, result.hooks, format);
+    result.cleanText = sanitizeText(result.text, result.customTags, result.links, result.hooks, format);
     return result;
 }
 
 
 function processPassageText(passageText, format) {
-    const result = { links: [] };
+    const result = { links: [], customTags: [] };
     if (format === FORMAT_HARLOWE_3) {
         result.hooks = [];
     }
     let currentIndex = 0;
     while (currentIndex < passageText.length) {
+        const maybeCustomTag = extractCustomTagsAtIndex(passageText, currentIndex);
+        if (maybeCustomTag) {
+            result.customTags.push(maybeCustomTag);
+            currentIndex += maybeCustomTag.original.length;
+        }
+
         const maybeLink = extractLinksAtIndex(passageText, currentIndex);
         if (maybeLink) {
             result.links.push(maybeLink);
             currentIndex += maybeLink.original.length;
         }
+
         if (format !== FORMAT_HARLOWE_3) {
             currentIndex += 1;
             continue;
         }
+
         const maybeLeftHook = extractLeftHooksAtIndex(passageText, currentIndex);
         if (maybeLeftHook) {
             result.hooks.push(maybeLeftHook);
             currentIndex += maybeLeftHook.original.length;
         }
         currentIndex += 1;
+
         const maybeHook = extractHooksAtIndex(passageText, currentIndex);
         if (maybeHook) {
             result.hooks.push(maybeHook);
@@ -109,6 +118,18 @@ function processPassageText(passageText, format) {
         }
     }
     return result;
+}
+
+
+function extractCustomTagsAtIndex(passageText, currentIndex) {
+    const currentChar = passageText[currentIndex];
+    const nextChar = passageText[currentIndex + 1];
+
+    if (currentChar === '>' && nextChar === '>') {
+        const customTag = getSubstringBetweenBrackets(passageText, currentIndex + 1, '>', '<');
+        const original = passageText.substring(currentIndex, currentIndex + customTag.length + 4);
+        return { tag: customTag.trim(), original: original };
+    }
 }
 
 
@@ -174,7 +195,10 @@ function extractHooksAtIndex(passageText, currentIndex) {
 }
 
 
-function sanitizeText(passageText, links, hooks, format) {
+function sanitizeText(passageText,  customTags, links, hooks, format) {
+    customTags.forEach((customTag) => {
+        passageText = passageText.replace(customTag.original, '');
+    });
     links.forEach((link) => {
         passageText = passageText.replace(link.original, '');
     });
