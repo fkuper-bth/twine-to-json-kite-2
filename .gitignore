@@ -6,6 +6,9 @@
 # Output of 'npm test'
 output.json
 
+# Launch configuration and settings
+.vscode/
+
 # Logs
 logs
 *.log

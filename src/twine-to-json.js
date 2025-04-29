@@ -75,13 +75,13 @@ function processPassageElement(passageElement, format) {
     };
     result.text = passageElement.textContent.trim();
     Object.assign(result, processPassageText(result.text, format));
-    result.cleanText = sanitizeText(result.text, result.customTags, result.links, result.hooks, format);
+    result.cleanText = sanitizeText(result.text, result.novelEvents, result.hooks, format);
     return result;
 }
 
 
 function processPassageText(passageText, format) {
-    const result = { links: [], customTags: [] };
+    const result = { novelEvents: [] };
     if (format === FORMAT_HARLOWE_3) {
         result.hooks = [];
     }
@@ -89,13 +89,17 @@ function processPassageText(passageText, format) {
     while (currentIndex < passageText.length) {
         const maybeCustomTag = extractCustomTagsAtIndex(passageText, currentIndex);
         if (maybeCustomTag) {
-            result.customTags.push(maybeCustomTag);
             currentIndex += maybeCustomTag.original.length;
+            const maybeAssociatedText = extractCustomTagAssociatedTag(currentIndex, passageText);
+            if (maybeAssociatedText) {
+                maybeCustomTag.text = maybeAssociatedText;
+            }
+            result.novelEvents.push(maybeCustomTag);
         }
 
         const maybeLink = extractLinksAtIndex(passageText, currentIndex);
         if (maybeLink) {
-            result.links.push(maybeLink);
+            result.novelEvents.push(maybeLink);
             currentIndex += maybeLink.original.length;
         }
 
@@ -141,13 +145,13 @@ function extractCustomTagsAtIndex(passageText, currentIndex) {
             return { type: type, index: index, action: action, expression: expression, original: original };
         }
         if (customTagParts.length === 2) {
-            const type = customTagParts[0].trim();
+            const type = customTagParts[0].trim().toLowerCase();
             const name = customTagParts[1].trim();
 
             return { type: type, name: name, original: original };
         }
         if (customTagParts.length === 1) {
-            const type = customTagParts[0].trim();
+            const type = customTagParts[0].trim().toLowerCase();
 
             return { type: type, original: original };
         }
@@ -155,22 +159,53 @@ function extractCustomTagsAtIndex(passageText, currentIndex) {
 }
 
 
+function extractCustomTagAssociatedTag(index, passageText) {
+    let searchIndex = index;
+
+    while (searchIndex < passageText.length) {
+        const nextCustomTag = extractCustomTagsAtIndex(passageText, searchIndex);
+        const nextLink = extractLinksAtIndex(passageText, searchIndex);
+        const nextLeftHook = extractLeftHooksAtIndex(passageText, searchIndex);
+        const nextHook = extractHooksAtIndex(passageText, searchIndex);
+
+        // if we hit a custom tag, link, left hook, or hook, we stop searching
+        // and set the text of the custom tag to the text between the index and the next tag
+        if (nextCustomTag || nextLink || nextLeftHook || nextHook) {
+            return passageText.substring(index, searchIndex).trim();
+        }
+
+        searchIndex += 1;
+    }
+}
+
+
 function extractLinksAtIndex(passageText, currentIndex) {
     const currentChar = passageText[currentIndex];
     const nextChar = passageText[currentIndex + 1];
+    const result = { type: 'link' };
+
     if (currentChar === '[' && nextChar === '[') {
         const link = getSubstringBetweenBrackets(passageText, currentIndex + 1);
         const leftSplit = link.split('<-', 2);
         const rightSplit = link.split('->', 2);
         const original = passageText.substring(currentIndex, currentIndex + link.length + 4);
         if (leftSplit.length === 2) {
-            return { linkText: leftSplit[1].trim(), passageName: leftSplit[0].trim(), original: original };
+            result.linkText = leftSplit[1].trim();
+            result.passageName = leftSplit[0].trim();
+            result.original = original;
+            return result;
         }
         else if (rightSplit.length === 2) {
-            return { linkText: rightSplit[0].trim(), passageName: rightSplit[1].trim(), original: original };
+            result.linkText = rightSplit[0].trim();
+            result.passageName = rightSplit[1].trim();
+            result.original = original;
+            return result;
         }
         else {
-            return { linkText: link.trim(), passageName: link.trim(), original: original };
+            result.linkText = link.trim();
+            result.passageName = link.trim();
+            result.original = original;
+            return result;
         }
     }
 }
@@ -217,7 +252,7 @@ function extractHooksAtIndex(passageText, currentIndex) {
 }
 
 
-function sanitizeText(passageText,  customTags, links, hooks, format) {
+function sanitizeText(passageText, customTags, links, hooks, format) {
     customTags.forEach((customTag) => {
         passageText = passageText.replace(customTag.original, '');
     });
