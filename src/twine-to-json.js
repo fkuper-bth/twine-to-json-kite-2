@@ -133,18 +133,23 @@ function extractCustomTagsAtIndex(passageText, currentIndex) {
             throw new Error('Custom tag has too many parts');
         }
         if (customTagParts.length === 3) {
-            const type = "character_description";
-            const index = getSubstringBetweenBrackets(customTagParts[0].trim());
-            const action = getSubstringBetweenBrackets(customTagParts[1].trim());
-            const expression = getSubstringBetweenBrackets(customTagParts[2].trim());
+            const type = "character_action_description";
+            const index = customTagParts[0].trim();
+            const action = customTagParts[1].trim();
+            const expression = customTagParts[2].trim();
 
             return { type: type, index: index, action: action, expression: expression, original: original };
         }
         if (customTagParts.length === 2) {
             const type = customTagParts[0].trim();
-            const name = getSubstringBetweenBrackets(customTagParts[1].trim());
+            const name = customTagParts[1].trim();
 
             return { type: type, name: name, original: original };
+        }
+        if (customTagParts.length === 1) {
+            const type = customTagParts[0].trim();
+
+            return { type: type, original: original };
         }
     }
 }
