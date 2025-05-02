@@ -4,7 +4,7 @@
 *.DS_Store
 
 # Output of 'npm test'
-output.json
+build
 
 # Launch configuration and settings
 .vscode/

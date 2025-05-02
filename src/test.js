@@ -31,7 +31,7 @@ function convertTwineToJSON(htmlFilePath, outputFilePath, format = 'harlowe-3') 
 if (require.main === module) {
     try {
         const htmlFilePath = process.argv[2];
-        const outputFilePath = 'output.json';
+        const outputFilePath = './build/events.json';
         convertTwineToJSON(htmlFilePath, outputFilePath);
     } catch (error) {
         console.error(error.message);
