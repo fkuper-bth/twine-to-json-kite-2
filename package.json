@@ -11,13 +11,16 @@
     "url": "git+https://github.com/fkuper/twine-to-json-kite-2.git"
   },
   "author": "Jonathan Schoonhoven",
-  "contributors": ["Frederik Kuper"],
+  "contributors": [
+    "Frederik Kuper"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fkuper/twine-to-json-kite-2/issues"
   },
   "homepage": "https://github.com/fkuper/twine-to-json-kite-2#readme",
   "dependencies": {
-    "jsdom": "^26.0.0"
+    "jsdom": "^26.0.0",
+    "jszip": "^3.10.1"
   }
 }
