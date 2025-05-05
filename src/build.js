@@ -1,20 +1,22 @@
 const fs = require('fs');
 const VERSION = JSON.parse(fs.readFileSync('package.json')).version;
 
+const AUTHOR = 'Frederik Kuper';
+
 const FORMATS = [
     {
-        name: 'Twine to JSON',
+        name: 'Twine w/ Kite2 to JSON',
         version: VERSION,
-        description: 'Convert Twine story to JSON',
+        description: 'Convert Twine story with Kite2 customizations to JSON',
         scriptPath: 'src/twine-to-json.js',
         templatePath: 'templates/json.html',
         commandString: 'twineToJSON("twine")',
         buildPath: 'dist/twine.js',
     },
     {
-        name: 'Harlowe 3 to JSON',
+        name: 'Harlowe 3 w/ Kite2 to JSON',
         version: VERSION,
-        description: 'Convert Harlowe 3-formatted Twine story to JSON',
+        description: 'Convert Harlowe 3-formatted Twine story with Kite2 customizations to JSON',
         scriptPath: 'src/twine-to-json.js',
         templatePath: 'templates/json.html',
         commandString: 'twineToJSON("harlowe-3")',
@@ -51,7 +53,7 @@ function _generateFormat({ name, version, description, source }) {
 window.storyFormat({
     "name": "${name}",
     "version": "${version}",
-    "author": "Jonathan Schoonhoven",
+    "author": "${AUTHOR}",
     "description": "${description}",
     "proofing": false,
     "source": \`
