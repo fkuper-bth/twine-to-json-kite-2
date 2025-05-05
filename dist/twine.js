@@ -1,8 +1,8 @@
 window.storyFormat({
-    "name": "Twine to JSON",
-    "version": "0.0.6",
-    "author": "Jonathan Schoonhoven",
-    "description": "Convert Twine story to JSON",
+    "name": "Twine w/ Kite2 to JSON",
+    "version": "0.0.1",
+    "author": "Frederik Kuper",
+    "description": "Convert Twine story with Kite2 customizations to JSON",
     "proofing": false,
     "source": `
 <html>
