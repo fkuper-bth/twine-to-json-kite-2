@@ -297,7 +297,7 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
     let currentIndex = startIndex || 0;
     let substring = '';
     if (string[currentIndex] !== openBracket) {
-        throw new Error(`startIndex of getSubstringBetweenBrackets must correspond to an open bracket, input: ${string}`);
+        throw new Error("startIndex of getSubstringBetweenBrackets must correspond to an open bracket, input: ", string);
     }
     while (currentIndex < string.length) {
         const currentChar = string[currentIndex];

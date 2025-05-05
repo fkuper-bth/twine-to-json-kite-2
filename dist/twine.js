@@ -10,7 +10,7 @@ window.storyFormat({
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 		<title>Harlowe To JSON</title>
         <script type='text/javascript'>
-            /**
+/**
 * Twine To JSON
 *
 * Copyright (c) 2020 Jonathan Schoonhoven
@@ -30,6 +30,8 @@ window.storyFormat({
 * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
+export default { twineToJSON };
 
 const STORY_TAG_NAME = 'tw-storydata';
 const PASSAGE_TAG_NAME = 'tw-passagedata';
@@ -52,6 +54,7 @@ function twineToJSON(format) {
         schemaName: storyMeta.format,
         schemaVersion: storyMeta['format-version'],
         createdAtMs: Date.now(),
+        startNode: storyMeta.startnode
     };
     validate(format);
     const passageElements = Array.from(storyElement.getElementsByTagName(PASSAGE_TAG_NAME));
@@ -83,35 +86,48 @@ function processPassageElement(passageElement, format) {
         tags: passageMeta.tags,
         id: passageMeta.pid,
     };
-    result.text = passageElement.innerText.trim();
+    result.text = passageElement.textContent.trim();
     Object.assign(result, processPassageText(result.text, format));
-    result.cleanText = sanitizeText(result.text, result.links, result.hooks, format);
+    result.cleanText = sanitizeText(result.text, result.novelEvents, result.hooks, format);
     return result;
 }
 
 
 function processPassageText(passageText, format) {
-    const result = { links: [] };
+    const result = { novelEvents: [] };
     if (format === FORMAT_HARLOWE_3) {
         result.hooks = [];
     }
     let currentIndex = 0;
     while (currentIndex < passageText.length) {
+        const maybeCustomTag = extractCustomTagsAtIndex(passageText, currentIndex);
+        if (maybeCustomTag) {
+            currentIndex += maybeCustomTag.original.length;
+            const maybeAssociatedText = extractCustomTagAssociatedTag(currentIndex, passageText);
+            if (maybeAssociatedText) {
+                maybeCustomTag.text = maybeAssociatedText;
+            }
+            result.novelEvents.push(maybeCustomTag);
+        }
+
         const maybeLink = extractLinksAtIndex(passageText, currentIndex);
         if (maybeLink) {
-            result.links.push(maybeLink);
+            result.novelEvents.push(maybeLink);
             currentIndex += maybeLink.original.length;
         }
+
         if (format !== FORMAT_HARLOWE_3) {
             currentIndex += 1;
             continue;
         }
+
         const maybeLeftHook = extractLeftHooksAtIndex(passageText, currentIndex);
         if (maybeLeftHook) {
             result.hooks.push(maybeLeftHook);
             currentIndex += maybeLeftHook.original.length;
         }
         currentIndex += 1;
+
         const maybeHook = extractHooksAtIndex(passageText, currentIndex);
         if (maybeHook) {
             result.hooks.push(maybeHook);
@@ -122,22 +138,87 @@ function processPassageText(passageText, format) {
 }
 
 
+function extractCustomTagsAtIndex(passageText, currentIndex) {
+    const currentChar = passageText[currentIndex];
+    const nextChar = passageText[currentIndex + 1];
+
+    if (currentChar === '>' && nextChar === '>') {
+        const customTag = getSubstringBetweenBrackets(passageText, currentIndex + 1, '>', '<');
+        const original = passageText.substring(currentIndex, currentIndex + customTag.length + 4);
+        const customTagParts = customTag.split('|');
+        if (customTagParts.length > 3) {
+            throw new Error('Custom tag has too many parts');
+        }
+        if (customTagParts.length === 3) {
+            const type = "character_action_description";
+            const index = customTagParts[0].trim();
+            const action = customTagParts[1].trim();
+            const expression = customTagParts[2].trim();
+
+            return { type: type, index: index, action: action, expression: expression, original: original };
+        }
+        if (customTagParts.length === 2) {
+            const type = customTagParts[0].trim().toLowerCase();
+            const name = customTagParts[1].trim();
+
+            return { type: type, name: name, original: original };
+        }
+        if (customTagParts.length === 1) {
+            const type = customTagParts[0].trim().toLowerCase();
+
+            return { type: type, original: original };
+        }
+    }
+}
+
+
+function extractCustomTagAssociatedTag(index, passageText) {
+    let searchIndex = index;
+
+    while (searchIndex < passageText.length) {
+        const nextCustomTag = extractCustomTagsAtIndex(passageText, searchIndex);
+        const nextLink = extractLinksAtIndex(passageText, searchIndex);
+        const nextLeftHook = extractLeftHooksAtIndex(passageText, searchIndex);
+        const nextHook = extractHooksAtIndex(passageText, searchIndex);
+
+        // if we hit a custom tag, link, left hook, or hook, we stop searching
+        // and set the text of the custom tag to the text between the index and the next tag
+        if (nextCustomTag || nextLink || nextLeftHook || nextHook) {
+            return passageText.substring(index, searchIndex).trim();
+        }
+
+        searchIndex += 1;
+    }
+}
+
+
 function extractLinksAtIndex(passageText, currentIndex) {
     const currentChar = passageText[currentIndex];
     const nextChar = passageText[currentIndex + 1];
+    const result = { type: 'link' };
+
     if (currentChar === '[' && nextChar === '[') {
         const link = getSubstringBetweenBrackets(passageText, currentIndex + 1);
         const leftSplit = link.split('<-', 2);
         const rightSplit = link.split('->', 2);
         const original = passageText.substring(currentIndex, currentIndex + link.length + 4);
         if (leftSplit.length === 2) {
-            return { linkText: leftSplit[1].trim(), passageName: leftSplit[0].trim(), original: original };
+            result.linkText = leftSplit[1].trim();
+            result.passageName = leftSplit[0].trim();
+            result.original = original;
+            return result;
         }
         else if (rightSplit.length === 2) {
-            return { linkText: rightSplit[0].trim(), passageName: rightSplit[1].trim(), original: original };
+            result.linkText = rightSplit[0].trim();
+            result.passageName = rightSplit[1].trim();
+            result.original = original;
+            return result;
         }
         else {
-            return { linkText: link.trim(), passageName: link.trim(), original: original };
+            result.linkText = link.trim();
+            result.passageName = link.trim();
+            result.original = original;
+            return result;
         }
     }
 }
@@ -184,7 +265,10 @@ function extractHooksAtIndex(passageText, currentIndex) {
 }
 
 
-function sanitizeText(passageText, links, hooks, format) {
+function sanitizeText(passageText, customTags, links, hooks, format) {
+    customTags.forEach((customTag) => {
+        passageText = passageText.replace(customTag.original, '');
+    });
     links.forEach((link) => {
         passageText = passageText.replace(link.original, '');
     });
@@ -225,7 +309,7 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
     let currentIndex = startIndex || 0;
     let substring = '';
     if (string[currentIndex] !== openBracket) {
-        throw new Error('startIndex of getSubstringBetweenBrackets must correspond to an open bracket');
+        throw new Error("startIndex of getSubstringBetweenBrackets must correspond to an open bracket, input: ", string);
     }
     while (currentIndex < string.length) {
         const currentChar = string[currentIndex];
