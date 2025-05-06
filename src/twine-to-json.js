@@ -19,7 +19,6 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-export default { twineToJSON };
 
 const STORY_TAG_NAME = 'tw-storydata';
 const PASSAGE_TAG_NAME = 'tw-passagedata';
@@ -253,12 +252,9 @@ function extractHooksAtIndex(passageText, currentIndex) {
 }
 
 
-function sanitizeText(passageText, customTags, links, hooks, format) {
-    customTags.forEach((customTag) => {
+function sanitizeText(passageText, novelEvents, hooks, format) {
+    novelEvents.forEach((customTag) => {
         passageText = passageText.replace(customTag.original, '');
-    });
-    links.forEach((link) => {
-        passageText = passageText.replace(link.original, '');
     });
     if (format === FORMAT_HARLOWE_3) {
         hooks.forEach((hook) => {
@@ -321,3 +317,5 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
     }
     return substring;
 }
+
+global.twineToJSON = twineToJSON;
