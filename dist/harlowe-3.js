@@ -1,6 +1,6 @@
 window.storyFormat({
     "name": "Harlowe 3 w/ Kite2 to JSON",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "Frederik Kuper",
     "description": "Convert Harlowe 3-formatted Twine story with Kite2 customizations to JSON",
     "proofing": false,

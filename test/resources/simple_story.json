@@ -1,0 +1,35 @@
+{
+    "uuid": "12345",
+    "name": "Test Story",
+    "creator": "Twine",
+    "creatorVersion": "2.3.5",
+    "schemaName": "twine",
+    "schemaVersion": "1.0.0",
+    "createdAtMs": 0,
+    "startNode": "1",
+    "passages": [
+        {
+            "id": "1",
+            "name": "Start",
+            "tags": "",
+            "text": "This is the start passage.",
+            "novelEvents": [],
+            "cleanText": "This is the start passage."
+        },
+        {
+            "id": "2",
+            "name": "Next",
+            "tags": "tag1 tag2",
+            "text": "[[Go to Start->Start]]",
+            "novelEvents": [
+                {
+                    "type": "link",
+                    "linkText": "Go to Start",
+                    "passageName": "Start",
+                    "original": "[[Go to Start->Start]]"
+                }
+            ],
+            "cleanText": ""
+        }
+    ]
+}

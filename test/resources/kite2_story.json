@@ -1,0 +1,254 @@
+{
+  "uuid": "50A27C94-E056-4D0D-A122-CEDDAEC7CDF2",
+  "name": "Kite2_Demo",
+  "creator": "Twine",
+  "creatorVersion": "2.10.0",
+  "schemaName": "Harlowe",
+  "schemaVersion": "3.3.9",
+  "createdAtMs": 0,
+  "startNode": "1",
+  "passages": [
+    {
+      "name": "Einstiegskontext",
+      "tags": "",
+      "id": "1",
+      "text": ">>Info<<\nDies ist eine Info Nachricht, um Kontext über die Geschichte zu liefern!\n\n>>--<<\n>>Player<<\nDas macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!\n\n[[Charaktere Tauchen Auf]]",
+      "novelEvents": [
+        {
+          "type": "info",
+          "original": ">>Info<<",
+          "text": "Dies ist eine Info Nachricht, um Kontext über die Geschichte zu liefern!"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "player",
+          "original": ">>Player<<",
+          "text": "Das macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!"
+        },
+        {
+          "type": "link",
+          "linkText": "Charaktere Tauchen Auf",
+          "passageName": "Charaktere Tauchen Auf",
+          "original": "[[Charaktere Tauchen Auf]]"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Dies ist eine Info Nachricht, um Kontext über die Geschichte zu liefern!\n\n\n\nDas macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!"
+    },
+    {
+      "name": "Charaktere Tauchen Auf",
+      "tags": "",
+      "id": "2",
+      "text": ">>Character1|Speaks|Smiling<<\nHallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!\n\n>>--<<\n>>Character2|Speaks|Dissatisfied<<\nIch dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?\n\n>>--<<\n>>Bias|BiasName<<\n\n>>--<<\n>>Sound|telephoneCall<<\n\n[[So weit so gut.->Neutrales Ende]]\n\n[[Hervorragend!->Gutes Ende]]\n\n[[Nicht so gut...->Tieferes Gespräch]]",
+      "novelEvents": [
+        {
+          "type": "character_action_description",
+          "index": "Character1",
+          "action": "Speaks",
+          "expression": "Smiling",
+          "original": ">>Character1|Speaks|Smiling<<",
+          "text": "Hallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "character_action_description",
+          "index": "Character2",
+          "action": "Speaks",
+          "expression": "Dissatisfied",
+          "original": ">>Character2|Speaks|Dissatisfied<<",
+          "text": "Ich dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "bias",
+          "name": "BiasName",
+          "original": ">>Bias|BiasName<<"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "sound",
+          "name": "telephoneCall",
+          "original": ">>Sound|telephoneCall<<"
+        },
+        {
+          "type": "link",
+          "linkText": "So weit so gut.",
+          "passageName": "Neutrales Ende",
+          "original": "[[So weit so gut.->Neutrales Ende]]"
+        },
+        {
+          "type": "link",
+          "linkText": "Hervorragend!",
+          "passageName": "Gutes Ende",
+          "original": "[[Hervorragend!->Gutes Ende]]"
+        },
+        {
+          "type": "link",
+          "linkText": "Nicht so gut...",
+          "passageName": "Tieferes Gespräch",
+          "original": "[[Nicht so gut...->Tieferes Gespräch]]"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Hallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!\n\n\n\nIch dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?"
+    },
+    {
+      "name": "Neutrales Ende",
+      "tags": "",
+      "id": "3",
+      "text": ">>Character2|Speaks|Neutral<<\nAchso, dann ist ja soweit alles okay.\n\n>>--<<\n>>Player<<\nJa das stimmt.\n\n>>End<<",
+      "novelEvents": [
+        {
+          "type": "character_action_description",
+          "index": "Character2",
+          "action": "Speaks",
+          "expression": "Neutral",
+          "original": ">>Character2|Speaks|Neutral<<",
+          "text": "Achso, dann ist ja soweit alles okay."
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "player",
+          "original": ">>Player<<",
+          "text": "Ja das stimmt."
+        },
+        {
+          "type": "end",
+          "original": ">>End<<"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Achso, dann ist ja soweit alles okay.\n\n\n\nJa das stimmt."
+    },
+    {
+      "name": "Gutes Ende",
+      "tags": "",
+      "id": "4",
+      "text": ">>Character1|Speaks|Smiling<<\nJa das ist doch super!\n\n>>--<<\n>>Character2|Speaks|Smiling<<\nAllerdings. Das freut uns beide sehr.\n\n>>--<<\n>>Player<<\nDanke!\n\n>>--<<\n>>End<<",
+      "novelEvents": [
+        {
+          "type": "character_action_description",
+          "index": "Character1",
+          "action": "Speaks",
+          "expression": "Smiling",
+          "original": ">>Character1|Speaks|Smiling<<",
+          "text": "Ja das ist doch super!"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "character_action_description",
+          "index": "Character2",
+          "action": "Speaks",
+          "expression": "Smiling",
+          "original": ">>Character2|Speaks|Smiling<<",
+          "text": "Allerdings. Das freut uns beide sehr."
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "player",
+          "original": ">>Player<<",
+          "text": "Danke!"
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "end",
+          "original": ">>End<<"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Ja das ist doch super!\n\n\n\nAllerdings. Das freut uns beide sehr.\n\n\n\nDanke!"
+    },
+    {
+      "name": "Tieferes Gespräch",
+      "tags": "",
+      "id": "5",
+      "text": ">>Character1|Speaks|Concerned<<\nOh, das tut mir Leid. Können wir denn etwas für dich tun?\n\n[[Nein, ich komme schon klar.->Negatives Ende]]\n\n[[Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.->Neutrales Ende]]",
+      "novelEvents": [
+        {
+          "type": "character_action_description",
+          "index": "Character1",
+          "action": "Speaks",
+          "expression": "Concerned",
+          "original": ">>Character1|Speaks|Concerned<<",
+          "text": "Oh, das tut mir Leid. Können wir denn etwas für dich tun?"
+        },
+        {
+          "type": "link",
+          "linkText": "Nein, ich komme schon klar.",
+          "passageName": "Negatives Ende",
+          "original": "[[Nein, ich komme schon klar.->Negatives Ende]]"
+        },
+        {
+          "type": "link",
+          "linkText": "Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.",
+          "passageName": "Neutrales Ende",
+          "original": "[[Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.->Neutrales Ende]]"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Oh, das tut mir Leid. Können wir denn etwas für dich tun?"
+    },
+    {
+      "name": "Negatives Ende",
+      "tags": "",
+      "id": "6",
+      "text": ">>Character1|Speaks|Critical<<\nWenn du nicht mit uns redest, können wir dir auch nicht helfen.\n\n>>--<<\n>>Character2|Speaks|Rejecting<<\nJa das sehe ich auch so. Dann bis zum nächsten mal.\n\n>>--<<\n>>End<<",
+      "novelEvents": [
+        {
+          "type": "character_action_description",
+          "index": "Character1",
+          "action": "Speaks",
+          "expression": "Critical",
+          "original": ">>Character1|Speaks|Critical<<",
+          "text": "Wenn du nicht mit uns redest, können wir dir auch nicht helfen."
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "character_action_description",
+          "index": "Character2",
+          "action": "Speaks",
+          "expression": "Rejecting",
+          "original": ">>Character2|Speaks|Rejecting<<",
+          "text": "Ja das sehe ich auch so. Dann bis zum nächsten mal."
+        },
+        {
+          "type": "--",
+          "original": ">>--<<"
+        },
+        {
+          "type": "end",
+          "original": ">>End<<"
+        }
+      ],
+      "hooks": [],
+      "cleanText": "Wenn du nicht mit uns redest, können wir dir auch nicht helfen.\n\n\n\nJa das sehe ich auch so. Dann bis zum nächsten mal."
+    }
+  ]
+}

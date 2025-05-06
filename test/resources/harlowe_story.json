@@ -1,0 +1,27 @@
+{
+    "uuid": "67890",
+    "name": "Harlowe Story",
+    "creator": "Twine",
+    "creatorVersion": "2.3.5",
+    "schemaName": "harlowe-3",
+    "schemaVersion": "3.2.1",
+    "createdAtMs": 0,
+    "startNode": "1",
+    "passages": [
+        {
+            "id": "1",
+            "name": "Start",
+            "tags": "",
+            "text": "This is the start passage with a |hook>[content].",
+            "novelEvents": [],
+            "hooks": [
+                {
+                    "hookName": "hook",
+                    "hookText": "content",
+                    "original": "|hook>[content]"
+                }
+            ],
+            "cleanText": "This is the start passage with a ."
+        }
+    ]
+}
