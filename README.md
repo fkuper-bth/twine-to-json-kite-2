@@ -80,7 +80,18 @@ All custom tags that this format adds are enclosed within **double angle bracket
 - `>>Player<<`
   - This tag denotes a message that should come from the player's character without requiring user interaction.
   - **example input**:
+    ```
+    >>Player<<
+    Yes that's true.
+    ```
   - **output**:
+    ```json
+    {
+        "type": "player",
+        "original": ">>Player<<",
+        "text": "Yes that's true."
+    }
+    ```
 - `>>--<<`
   - This tag is used to signify the end of a previously used tag.
   - **example input**:
