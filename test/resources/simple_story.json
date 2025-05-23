@@ -20,16 +20,36 @@
             "id": "2",
             "name": "Next",
             "tags": "tag1 tag2",
-            "text": "[[Go to Start->Start]]",
+            "text": "[[Right routed named link (Twine 2 feature)->Start]]\n[[Link Rename using Pipe (Twine 1 feature)|End]]\n[[Start<-Left routed named link (Twine 2 feature)]]",
             "novelEvents": [
                 {
                     "type": "link",
-                    "linkText": "Go to Start",
+                    "linkText": "Right routed named link (Twine 2 feature)",
                     "passageName": "Start",
-                    "original": "[[Go to Start->Start]]"
+                    "original": "[[Right routed named link (Twine 2 feature)->Start]]"
+                },
+                {
+                    "type": "link",
+                    "linkText": "Link Rename using Pipe (Twine 1 feature)",
+                    "passageName": "End",
+                    "original": "[[Link Rename using Pipe (Twine 1 feature)|End]]"
+                },
+                {
+                    "type": "link",
+                    "linkText": "Left routed named link (Twine 2 feature)",
+                    "passageName": "Start",
+                    "original": "[[Start<-Left routed named link (Twine 2 feature)]]"
                 }
             ],
             "cleanText": ""
+        },
+        {
+            "id": "3",
+            "name": "End",
+            "tags": "tag3",
+            "text": "This is the end passage.",
+            "novelEvents": [],
+            "cleanText": "This is the end passage."
         }
     ]
 }

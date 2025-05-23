@@ -1,4 +1,9 @@
 <tw-storydata ifid="12345" name="Test Story" creator="Twine" creator-version="2.3.5" format="twine" format-version="1.0.0" startnode="1">
     <tw-passagedata pid="1" name="Start" tags="" position="100,100">This is the start passage.</tw-passagedata>
-    <tw-passagedata pid="2" name="Next" tags="tag1 tag2" position="200,200">[[Go to Start->Start]]</tw-passagedata>
+    <tw-passagedata pid="2" name="Next" tags="tag1 tag2" position="200,200">
+[[Right routed named link (Twine 2 feature)->Start]]
+[[Link Rename using Pipe (Twine 1 feature)|End]]
+[[Start&lt;-Left routed named link (Twine 2 feature)]]
+    </tw-passagedata>
+    <tw-passagedata pid="3" name="End" tags="tag3" position="300,300">This is the end passage.</tw-passagedata>
 </tw-storydata>
