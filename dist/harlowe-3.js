@@ -1,6 +1,6 @@
 window.storyFormat({
     "name": "Harlowe 3 w/ Kite2 to JSON",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": "Frederik Kuper",
     "description": "Convert Harlowe 3-formatted Twine story with Kite2 customizations to JSON",
     "proofing": false,
@@ -200,6 +200,7 @@ function extractLinksAtIndex(passageText, currentIndex) {
         const link = getSubstringBetweenBrackets(passageText, currentIndex + 1);
         const leftSplit = link.split('<-', 2);
         const rightSplit = link.split('->', 2);
+        const pipeSplit = link.split('|', 2);
         const original = passageText.substring(currentIndex, currentIndex + link.length + 4);
         if (leftSplit.length === 2) {
             result.linkText = leftSplit[1].trim();
@@ -210,6 +211,12 @@ function extractLinksAtIndex(passageText, currentIndex) {
         else if (rightSplit.length === 2) {
             result.linkText = rightSplit[0].trim();
             result.passageName = rightSplit[1].trim();
+            result.original = original;
+            return result;
+        }
+        else if (pipeSplit.length === 2) {
+            result.linkText = pipeSplit[0].trim();
+            result.passageName = pipeSplit[1].trim();
             result.original = original;
             return result;
         }
