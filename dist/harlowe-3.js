@@ -1,6 +1,6 @@
 window.storyFormat({
     "name": "Harlowe 3 w/ Kite2 to JSON",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "author": "Frederik Kuper",
     "description": "Convert Harlowe 3-formatted Twine story with Kite2 customizations to JSON",
     "proofing": false,
@@ -221,7 +221,7 @@ function extractLinksAtIndex(passageText, currentIndex) {
             return result;
         }
         else {
-            result.linkText = link.trim();
+            result.linkText = null;
             result.passageName = link.trim();
             result.original = original;
             return result;

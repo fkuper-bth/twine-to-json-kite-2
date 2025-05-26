@@ -209,7 +209,7 @@ function extractLinksAtIndex(passageText, currentIndex) {
             return result;
         }
         else {
-            result.linkText = link.trim();
+            result.linkText = null;
             result.passageName = link.trim();
             result.original = original;
             return result;
