@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>{{STORY_NAME}}</title>
+    <script type="text/javascript">
+      {{SCRIPT}}
+    </script>
+  </head>
+  <body>
+    <pre id="output"></pre>
+    <div id="storyData" style="display: none;">
+      {{STORY_DATA}}
+    </div>
+    <script type='text/javascript'>document.getElementById('content').innerHTML = JSON.stringify({{COMMAND}}, null, 2);</script>
+  </body>
+</html>

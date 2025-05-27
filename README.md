@@ -9,21 +9,11 @@ This project was forked from [twine-to-json](https://github.com/jtschoonhoven/tw
 
 ## Setup
 
-From the Twine 2 homescreen, select `Formats` and then `Add a New Format`. At the prompt, paste in one of the addresses below:
-
-For vanilla Twine-to-JSON (without special support for Harlowe 3.x), use this address:
+From the Twine 2 homescreen, select `Formats` and then `Add a New Format`. At the prompt, paste in the address below:
 
 ```
-https://fkuper.github.io/twine-to-json-kite-2/dist/twine.js
+https://fkuper.github.io/twine-to-json-kite-2/dist/format.js
 ```
-
-For Harlowe-flavored Twine-to-JSON, use this address:
-
-```
-https://fkuper.github.io/twine-to-json-kite-2/dist/harlowe-3.js
-```
-
-If you're not sure which one you should use then go with the Harlowe-flavored version. It has everything the vanilla flavor has, plus a little extra.
 
 
 ## Export

@@ -1,63 +1,32 @@
-const fs = require('fs');
-const VERSION = JSON.parse(fs.readFileSync('package.json')).version;
+const fs = require("fs");
+const Uglify = require("uglify-js");
 
-const AUTHOR = 'Frederik Kuper';
+const package = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+const code = fs.readFileSync("src/twine-to-json.js", "utf-8");
+const js = Uglify.minify(code);
 
-const FORMATS = [
-    {
-        name: 'Twine w/ Kite2 to JSON',
-        version: VERSION,
-        description: 'Convert Twine story with Kite2 customizations to JSON',
-        scriptPath: 'src/twine-to-json.js',
-        templatePath: 'templates/json.html',
-        commandString: 'twineToJSON("twine")',
-        buildPath: 'dist/twine.js',
-    },
-    {
-        name: 'Harlowe 3 w/ Kite2 to JSON',
-        version: VERSION,
-        description: 'Convert Harlowe 3-formatted Twine story with Kite2 customizations to JSON',
-        scriptPath: 'src/twine-to-json.js',
-        templatePath: 'templates/json.html',
-        commandString: 'twineToJSON("harlowe-3")',
-        buildPath: 'dist/harlowe-3.js',
-    },
-];
+var html = fs.readFileSync("templates/storyFormat.html", "utf-8");
+html = html.replace("{{SCRIPT}}", js.code);
+html = html.replace("{{COMMAND}}", 'twineToJSON("harlowe-3")');
 
+const outputJSON = {
+    name: package.name,
+    version: package.version,
+    author: package.author,
+    description: package.description,
+    proofing: false,
+    source: html,
+};
 
-function build() {
-    FORMATS.forEach((format) => {
-        _buildFormat(format);
-    });
-}
-build();
-
-
-function _buildFormat({ name, version, description, scriptPath, templatePath, commandString, buildPath }) {
-    const source = _generateSource({ scriptPath, templatePath, commandString });
-    const format = _generateFormat({ name, version, description, source });
-    fs.writeFileSync(buildPath, format, 'utf8');
+if (!fs.existsSync("dist")) {
+    fs.mkdirSync("dist");
 }
 
-
-function _generateSource({ scriptPath, templatePath, commandString }) {
-    const scriptText = fs.readFileSync(scriptPath, 'utf8').replace(/\\/g, '\\\\');
-    const templateText = fs.readFileSync(templatePath, 'utf8');
-    const source = templateText.replace('{{SCRIPT}}', scriptText).replace('{{COMMAND}}', commandString);
-    return source;
-}
-
-
-function _generateFormat({ name, version, description, source }) {
-    return `\
-window.storyFormat({
-    "name": "${name}",
-    "version": "${version}",
-    "author": "${AUTHOR}",
-    "description": "${description}",
-    "proofing": false,
-    "source": \`
-${source}\`
+const outputString = "window.storyFormat(" + JSON.stringify(outputJSON, null, 2) + ");";
+fs.writeFile("dist/format.js", outputString, function (err) {
+    if (err) {
+        console.log("Error building story format:", err);
+    } else {
+        console.log("Successfully built story format to dist/format.js");
+    }
 });
-`
-}
