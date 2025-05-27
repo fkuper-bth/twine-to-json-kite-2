@@ -325,4 +325,4 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
     return substring;
 }
 
-global.twineToJSON = twineToJSON;
+window.twineToJSON = twineToJSON;

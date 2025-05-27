@@ -1,4 +1,7 @@
-const { JSDOM } = require('jsdom');
+/**
+ * @jest-environment jsdom
+ */
+
 const fs = require('fs');
 const path = require('path');
 
@@ -25,14 +28,6 @@ const testCases = [
 ];
 
 describe('twineToJSON with multiple input files', () => {
-    beforeEach(() => {
-        delete global.document; // Ensure a clean global document before each test
-    });
-
-    afterEach(() => {
-        delete global.document;
-    });
-
     testCases.forEach(({ input, expected, format }) => {
         it(`should correctly parse ${input} and match ${expected}`, () => {
             // Arrange: setup the global document and load the expected JSON
@@ -63,7 +58,6 @@ function setupGlobalDocument(fileName) {
     const htmlFilePath = path.join(__dirname, 'resources', fileName);
     const htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
 
-    // Parse the HTML content
-    const dom = new JSDOM(htmlContent);
-    global.document = dom.window.document;
+    // Set the HTML content in the global JSDOM document
+    document.documentElement.innerHTML = htmlContent;
 }

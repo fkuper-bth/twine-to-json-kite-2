@@ -1,6 +1,6 @@
 {
-  "name": "twine-to-json-kite-2",
-  "version": "0.0.4",
+  "name": "Twine w/ Kite2 to JSON",
+  "version": "0.0.5",
   "description": "Convert Twine stories to JSON for the KITE 2 format.",
   "scripts": {
     "build": "node ./src/build.js",
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/fkuper/twine-to-json-kite-2#readme",
   "dependencies": {
     "jest": "^29.7.0",
-    "jsdom": "^26.0.0",
+    "jest-environment-jsdom": "^30.0.0-beta.3",
     "jszip": "^3.10.1",
     "uglify-js": "^3.19.3"
   }
