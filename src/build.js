@@ -23,7 +23,7 @@ if (!fs.existsSync("dist")) {
 }
 
 const outputString = "window.storyFormat(" + JSON.stringify(outputJSON, null, 2) + ");";
-fs.writeFile("dist/format.js", outputString, function (err) {
+fs.writeFile("dist/format.js", outputString, "utf-8", function (err) {
     if (err) {
         console.log("Error building story format:", err);
     } else {
