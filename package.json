@@ -1,6 +1,6 @@
 {
   "name": "Twine w/ Kite2 to JSON",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Convert Twine stories to JSON for the KITE 2 format.",
   "scripts": {
     "build": "node ./src/build.js",

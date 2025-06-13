@@ -23,19 +23,19 @@
             "text": "[[Right routed named link (Twine 2 feature)->Start]]\n[[Link Rename using Pipe (Twine 1 feature)|End]]\n[[Start<-Left routed named link (Twine 2 feature)]]",
             "novelEvents": [
                 {
-                    "type": "link",
+                    "type": "LINK",
                     "linkText": "Right routed named link (Twine 2 feature)",
                     "passageName": "Start",
                     "original": "[[Right routed named link (Twine 2 feature)->Start]]"
                 },
                 {
-                    "type": "link",
+                    "type": "LINK",
                     "linkText": "Link Rename using Pipe (Twine 1 feature)",
                     "passageName": "End",
                     "original": "[[Link Rename using Pipe (Twine 1 feature)|End]]"
                 },
                 {
-                    "type": "link",
+                    "type": "LINK",
                     "linkText": "Left routed named link (Twine 2 feature)",
                     "passageName": "Start",
                     "original": "[[Start<-Left routed named link (Twine 2 feature)]]"

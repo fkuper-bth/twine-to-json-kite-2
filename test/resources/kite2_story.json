@@ -32,7 +32,7 @@
           "text": "Das macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": null,
           "passageName": "Charaktere Tauchen Auf",
           "original": "[[Charaktere Tauchen Auf]]"
@@ -89,19 +89,19 @@
           "original": ">>Sound|telephoneCall<<"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": "So weit so gut.",
           "passageName": "Neutrales Ende",
           "original": "[[So weit so gut.->Neutrales Ende]]"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": "Hervorragend!",
           "passageName": "Gutes Ende",
           "original": "[[Hervorragend!->Gutes Ende]]"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": "Nicht so gut...",
           "passageName": "Tieferes Gespräch",
           "original": "[[Nicht so gut...->Tieferes Gespräch]]"
@@ -207,13 +207,13 @@
           "text": "Oh, das tut mir Leid. Können wir denn etwas für dich tun?"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": "Nein, ich komme schon klar.",
           "passageName": "Negatives Ende",
           "original": "[[Nein, ich komme schon klar.->Negatives Ende]]"
         },
         {
-          "type": "link",
+          "type": "LINK",
           "linkText": "Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.",
           "passageName": "Neutrales Ende",
           "original": "[[Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.->Neutrales Ende]]"

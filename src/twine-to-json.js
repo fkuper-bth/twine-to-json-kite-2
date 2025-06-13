@@ -24,7 +24,7 @@ const PASSAGE_TAG_NAME = 'tw-passagedata';
 const FORMAT_TWINE = 'twine';
 const FORMAT_HARLOWE_3 = 'harlowe-3';
 const VALID_FORMATS = [FORMAT_TWINE, FORMAT_HARLOWE_3];
-const CUSTOM_KEYWORD_TYPES = Object.freeze({
+const KITE2_KEYWORD_TYPES = Object.freeze({
     SEPARATOR: '--',
     INFO_TEXT: 'info',
     PLAYER_TEXT: 'player',
@@ -162,13 +162,13 @@ function parseCustomKeywordType(typeString) {
     typeString = typeString.trim().toLowerCase();
 
     // check if typestring start with the word 'character'
-    if (typeString.startsWith(CUSTOM_KEYWORD_TYPES.CHARACTER_ACTION)) {
+    if (typeString.startsWith(KITE2_KEYWORD_TYPES.CHARACTER_ACTION)) {
         return 'CHARACTER_ACTION';
     }
 
     // check for other predefined keyword types
-    for (const key in CUSTOM_KEYWORD_TYPES) {
-        if (CUSTOM_KEYWORD_TYPES[key] === typeString) {
+    for (const key in KITE2_KEYWORD_TYPES) {
+        if (KITE2_KEYWORD_TYPES[key] === typeString) {
             type = key;
         }
     }
@@ -198,7 +198,7 @@ function extractCustomKeywordAssociatedText(index, passageText) {
 function extractLinksAtIndex(passageText, currentIndex) {
     const currentChar = passageText[currentIndex];
     const nextChar = passageText[currentIndex + 1];
-    const result = { type: 'link' };
+    const result = { type: 'LINK' };
 
     if (currentChar === '[' && nextChar === '[') {
         const link = getSubstringBetweenBrackets(passageText, currentIndex + 1);
