@@ -19,13 +19,20 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
 const STORY_TAG_NAME = 'tw-storydata';
 const PASSAGE_TAG_NAME = 'tw-passagedata';
 const FORMAT_TWINE = 'twine';
 const FORMAT_HARLOWE_3 = 'harlowe-3';
 const VALID_FORMATS = [FORMAT_TWINE, FORMAT_HARLOWE_3];
-
+const CUSTOM_KEYWORD_TYPES = Object.freeze({
+    SEPARATOR: '--',
+    INFO_TEXT: 'info',
+    PLAYER_TEXT: 'player',
+    END: 'end',
+    SOUND: 'sound',
+    BIAS: 'bias',
+    CHARACTER_ACTION: 'character',
+});
 
 /**
  * Convert Twine story to JSON.
@@ -51,7 +58,6 @@ function twineToJSON(format) {
     return result;
 }
 
-
 /**
  * Validate story and inputs. Currently this only validates the format arg. TODO: make this more robust.
  */
@@ -61,7 +67,6 @@ function validate(format) {
         throw new Error('Format is not valid.');
     }
 }
-
 
 /**
  * Convert the HTML element for a story passage to JSON.
@@ -79,7 +84,6 @@ function processPassageElement(passageElement, format) {
     return result;
 }
 
-
 function processPassageText(passageText, format) {
     const result = { novelEvents: [] };
     if (format === FORMAT_HARLOWE_3) {
@@ -87,14 +91,14 @@ function processPassageText(passageText, format) {
     }
     let currentIndex = 0;
     while (currentIndex < passageText.length) {
-        const maybeCustomTag = extractCustomTagsAtIndex(passageText, currentIndex);
-        if (maybeCustomTag) {
-            currentIndex += maybeCustomTag.original.length;
-            const maybeAssociatedText = extractCustomTagAssociatedTag(currentIndex, passageText);
+        const maybeCustomKeyword = extractCustomKeywordsAtIndex(passageText, currentIndex);
+        if (maybeCustomKeyword) {
+            currentIndex += maybeCustomKeyword.original.length;
+            const maybeAssociatedText = extractCustomKeywordAssociatedText(currentIndex, passageText);
             if (maybeAssociatedText) {
-                maybeCustomTag.text = maybeAssociatedText;
+                maybeCustomKeyword.text = maybeAssociatedText;
             }
-            result.novelEvents.push(maybeCustomTag);
+            result.novelEvents.push(maybeCustomKeyword);
         }
 
         const maybeLink = extractLinksAtIndex(passageText, currentIndex);
@@ -124,60 +128,72 @@ function processPassageText(passageText, format) {
     return result;
 }
 
-
-function extractCustomTagsAtIndex(passageText, currentIndex) {
+function extractCustomKeywordsAtIndex(passageText, currentIndex) {
     const currentChar = passageText[currentIndex];
     const nextChar = passageText[currentIndex + 1];
 
     if (currentChar === '>' && nextChar === '>') {
-        const customTag = getSubstringBetweenBrackets(passageText, currentIndex + 1, '>', '<');
-        const original = passageText.substring(currentIndex, currentIndex + customTag.length + 4);
-        const customTagParts = customTag.split('|');
-        if (customTagParts.length > 3) {
-            throw new Error('Custom tag has too many parts');
+        const customKeyword = getSubstringBetweenBrackets(passageText, currentIndex + 1, '>', '<');
+        const original = passageText.substring(currentIndex, currentIndex + customKeyword.length + 4);
+        const customKeywordParts = customKeyword.split('|');
+        if (customKeywordParts.length > 2) {
+            throw new Error('Custom keyword has too many parts');
         }
-        if (customTagParts.length === 3) {
-            const type = "character_action_description";
-            const index = customTagParts[0].trim();
-            const action = customTagParts[1].trim();
-            const expression = customTagParts[2].trim();
+        if (customKeywordParts.length === 2) {
+            const typeValue = customKeywordParts[0].trim().toLowerCase();
+            const type = parseCustomKeywordType(typeValue);
+            const associatedValue = customKeywordParts[1].trim();
 
-            return { type: type, index: index, action: action, expression: expression, original: original };
+            return { type: type, typeValue: typeValue, associatedValue: associatedValue, original: original };
         }
-        if (customTagParts.length === 2) {
-            const type = customTagParts[0].trim().toLowerCase();
-            const name = customTagParts[1].trim();
+        if (customKeywordParts.length === 1) {
+            const typeValue = customKeywordParts[0].trim().toLowerCase();
+            const type = parseCustomKeywordType(typeValue);
 
-            return { type: type, name: name, original: original };
-        }
-        if (customTagParts.length === 1) {
-            const type = customTagParts[0].trim().toLowerCase();
-
-            return { type: type, original: original };
+            return { type: type, typeValue: typeValue, original: original };
         }
     }
 }
 
+function parseCustomKeywordType(typeString) {
+    var type = 'CUSTOM';
 
-function extractCustomTagAssociatedTag(index, passageText) {
+    // normalize the type string
+    typeString = typeString.trim().toLowerCase();
+
+    // check if typestring start with the word 'character'
+    if (typeString.startsWith(CUSTOM_KEYWORD_TYPES.CHARACTER_ACTION)) {
+        return 'CHARACTER_ACTION';
+    }
+
+    // check for other predefined keyword types
+    for (const key in CUSTOM_KEYWORD_TYPES) {
+        if (CUSTOM_KEYWORD_TYPES[key] === typeString) {
+            type = key;
+        }
+    }
+
+    return type;
+}
+
+function extractCustomKeywordAssociatedText(index, passageText) {
     let searchIndex = index;
 
     while (searchIndex < passageText.length) {
-        const nextCustomTag = extractCustomTagsAtIndex(passageText, searchIndex);
+        const nextCustomKeyword = extractCustomKeywordsAtIndex(passageText, searchIndex);
         const nextLink = extractLinksAtIndex(passageText, searchIndex);
         const nextLeftHook = extractLeftHooksAtIndex(passageText, searchIndex);
         const nextHook = extractHooksAtIndex(passageText, searchIndex);
 
-        // if we hit a custom tag, link, left hook, or hook, we stop searching
-        // and set the text of the custom tag to the text between the index and the next tag
-        if (nextCustomTag || nextLink || nextLeftHook || nextHook) {
+        // if we hit a custom keyword, link, left hook, or hook, we stop searching
+        // and set the text of the custom keyword to the text between the index and the next keyword
+        if (nextCustomKeyword || nextLink || nextLeftHook || nextHook) {
             return passageText.substring(index, searchIndex).trim();
         }
 
         searchIndex += 1;
     }
 }
-
 
 function extractLinksAtIndex(passageText, currentIndex) {
     const currentChar = passageText[currentIndex];
@@ -217,7 +233,6 @@ function extractLinksAtIndex(passageText, currentIndex) {
     }
 }
 
-
 function extractLeftHooksAtIndex(passageText, currentIndex) {
     const regexAlphaNum = /[a-z0-9]+/i;
     const currentChar = passageText[currentIndex];
@@ -235,7 +250,6 @@ function extractLeftHooksAtIndex(passageText, currentIndex) {
         }
     }
 }
-
 
 function extractHooksAtIndex(passageText, currentIndex) {
     const regexAlphaNum = /[a-z0-9]+/i;
@@ -258,10 +272,9 @@ function extractHooksAtIndex(passageText, currentIndex) {
     }
 }
 
-
 function sanitizeText(passageText, novelEvents, hooks, format) {
-    novelEvents.forEach((customTag) => {
-        passageText = passageText.replace(customTag.original, '');
+    novelEvents.forEach((customKeyword) => {
+        passageText = passageText.replace(customKeyword.original, '');
     });
     if (format === FORMAT_HARLOWE_3) {
         hooks.forEach((hook) => {
@@ -270,7 +283,6 @@ function sanitizeText(passageText, novelEvents, hooks, format) {
     }
     return passageText.trim();
 }
-
 
 /**
  * Convert an HTML element to an object of attribute values.
@@ -284,14 +296,12 @@ function getElementAttributes(element) {
     return result;
 }
 
-
 /**
  * True if string starts with the given substring.
  */
 function stringStartsWith(string, startswith) {
     return string.trim().substring(0, startswith.length) === startswith;
 }
-
 
 function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBracket) {
     openBracket = openBracket || '[';

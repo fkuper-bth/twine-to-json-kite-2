@@ -5,7 +5,7 @@
   "creatorVersion": "2.10.0",
   "schemaName": "Harlowe",
   "schemaVersion": "3.3.9",
-  "createdAtMs": 0,
+  "createdAtMs": 1749816665451,
   "startNode": "1",
   "passages": [
     {
@@ -15,16 +15,19 @@
       "text": ">>Info<<\nDies ist eine Info Nachricht, um Kontext über die Geschichte zu liefern!\n\n>>--<<\n>>Player<<\nDas macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!\n\n[[Charaktere Tauchen Auf]]",
       "novelEvents": [
         {
-          "type": "info",
+          "type": "INFO_TEXT",
+          "typeValue": "info",
           "original": ">>Info<<",
           "text": "Dies ist eine Info Nachricht, um Kontext über die Geschichte zu liefern!"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "player",
+          "type": "PLAYER_TEXT",
+          "typeValue": "player",
           "original": ">>Player<<",
           "text": "Das macht Sinn und ist leicht verständlich, weshalb ich hierauf ganz automatisch antworte!"
         },
@@ -42,44 +45,47 @@
       "name": "Charaktere Tauchen Auf",
       "tags": "",
       "id": "2",
-      "text": ">>Character1|Speaks|Smiling<<\nHallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!\n\n>>--<<\n>>Character2|Speaks|Dissatisfied<<\nIch dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?\n\n>>--<<\n>>Bias|BiasName<<\n\n>>--<<\n>>Sound|telephoneCall<<\n\n[[So weit so gut.->Neutrales Ende]]\n\n[[Hervorragend!->Gutes Ende]]\n\n[[Nicht so gut...->Tieferes Gespräch]]",
+      "text": ">>Character1|Smiling<<\nHallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!\n\n>>--<<\n>>Character2|Dissatisfied<<\nIch dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?\n\n>>--<<\n>>Bias|BiasName<<\n\n>>--<<\n>>Sound|telephoneCall<<\n\n[[So weit so gut.->Neutrales Ende]]\n\n[[Hervorragend!->Gutes Ende]]\n\n[[Nicht so gut...->Tieferes Gespräch]]",
       "novelEvents": [
         {
-          "type": "character_action_description",
-          "index": "Character1",
-          "action": "Speaks",
-          "expression": "Smiling",
-          "original": ">>Character1|Speaks|Smiling<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character1",
+          "associatedValue": "Smiling",
+          "original": ">>Character1|Smiling<<",
           "text": "Hallo und herzlich willkommen bei der KITE II Story Demo!\nIch bin ein freundlicher Charakter!"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "character_action_description",
-          "index": "Character2",
-          "action": "Speaks",
-          "expression": "Dissatisfied",
-          "original": ">>Character2|Speaks|Dissatisfied<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character2",
+          "associatedValue": "Dissatisfied",
+          "original": ">>Character2|Dissatisfied<<",
           "text": "Ich dagegen bin unzufrieden mit meiner Rolle in dieser Geschichte.\nWie geht es dir?"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "bias",
-          "name": "BiasName",
+          "type": "BIAS",
+          "typeValue": "bias",
+          "associatedValue": "BiasName",
           "original": ">>Bias|BiasName<<"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "sound",
-          "name": "telephoneCall",
+          "type": "SOUND",
+          "typeValue": "sound",
+          "associatedValue": "telephoneCall",
           "original": ">>Sound|telephoneCall<<"
         },
         {
@@ -108,27 +114,29 @@
       "name": "Neutrales Ende",
       "tags": "",
       "id": "3",
-      "text": ">>Character2|Speaks|Neutral<<\nAchso, dann ist ja soweit alles okay.\n\n>>--<<\n>>Player<<\nJa das stimmt.\n\n>>End<<",
+      "text": ">>Character2|Neutral<<\nAchso, dann ist ja soweit alles okay.\n\n>>--<<\n>>Player<<\nJa das stimmt.\n\n>>End<<",
       "novelEvents": [
         {
-          "type": "character_action_description",
-          "index": "Character2",
-          "action": "Speaks",
-          "expression": "Neutral",
-          "original": ">>Character2|Speaks|Neutral<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character2",
+          "associatedValue": "Neutral",
+          "original": ">>Character2|Neutral<<",
           "text": "Achso, dann ist ja soweit alles okay."
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "player",
+          "type": "PLAYER_TEXT",
+          "typeValue": "player",
           "original": ">>Player<<",
           "text": "Ja das stimmt."
         },
         {
-          "type": "end",
+          "type": "END",
+          "typeValue": "end",
           "original": ">>End<<"
         }
       ],
@@ -139,43 +147,46 @@
       "name": "Gutes Ende",
       "tags": "",
       "id": "4",
-      "text": ">>Character1|Speaks|Smiling<<\nJa das ist doch super!\n\n>>--<<\n>>Character2|Speaks|Smiling<<\nAllerdings. Das freut uns beide sehr.\n\n>>--<<\n>>Player<<\nDanke!\n\n>>--<<\n>>End<<",
+      "text": ">>Character1|Smiling<<\nJa das ist doch super!\n\n>>--<<\n>>Character2|Smiling<<\nAllerdings. Das freut uns beide sehr.\n\n>>--<<\n>>Player<<\nDanke!\n\n>>--<<\n>>End<<",
       "novelEvents": [
         {
-          "type": "character_action_description",
-          "index": "Character1",
-          "action": "Speaks",
-          "expression": "Smiling",
-          "original": ">>Character1|Speaks|Smiling<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character1",
+          "associatedValue": "Smiling",
+          "original": ">>Character1|Smiling<<",
           "text": "Ja das ist doch super!"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "character_action_description",
-          "index": "Character2",
-          "action": "Speaks",
-          "expression": "Smiling",
-          "original": ">>Character2|Speaks|Smiling<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character2",
+          "associatedValue": "Smiling",
+          "original": ">>Character2|Smiling<<",
           "text": "Allerdings. Das freut uns beide sehr."
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "player",
+          "type": "PLAYER_TEXT",
+          "typeValue": "player",
           "original": ">>Player<<",
           "text": "Danke!"
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "end",
+          "type": "END",
+          "typeValue": "end",
           "original": ">>End<<"
         }
       ],
@@ -186,14 +197,13 @@
       "name": "Tieferes Gespräch",
       "tags": "",
       "id": "5",
-      "text": ">>Character1|Speaks|Concerned<<\nOh, das tut mir Leid. Können wir denn etwas für dich tun?\n\n[[Nein, ich komme schon klar.->Negatives Ende]]\n\n[[Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.->Neutrales Ende]]",
+      "text": ">>Character1|Concerned<<\nOh, das tut mir Leid. Können wir denn etwas für dich tun?\n\n[[Nein, ich komme schon klar.->Negatives Ende]]\n\n[[Nein, ich habe nur schlecht geschlafen. Morgen geht es mir wieder besser.->Neutrales Ende]]",
       "novelEvents": [
         {
-          "type": "character_action_description",
-          "index": "Character1",
-          "action": "Speaks",
-          "expression": "Concerned",
-          "original": ">>Character1|Speaks|Concerned<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character1",
+          "associatedValue": "Concerned",
+          "original": ">>Character1|Concerned<<",
           "text": "Oh, das tut mir Leid. Können wir denn etwas für dich tun?"
         },
         {
@@ -216,34 +226,35 @@
       "name": "Negatives Ende",
       "tags": "",
       "id": "6",
-      "text": ">>Character1|Speaks|Critical<<\nWenn du nicht mit uns redest, können wir dir auch nicht helfen.\n\n>>--<<\n>>Character2|Speaks|Rejecting<<\nJa das sehe ich auch so. Dann bis zum nächsten mal.\n\n>>--<<\n>>End<<",
+      "text": ">>Character1|Critical<<\nWenn du nicht mit uns redest, können wir dir auch nicht helfen.\n\n>>--<<\n>>Character2|Rejecting<<\nJa das sehe ich auch so. Dann bis zum nächsten mal.\n\n>>--<<\n>>End<<",
       "novelEvents": [
         {
-          "type": "character_action_description",
-          "index": "Character1",
-          "action": "Speaks",
-          "expression": "Critical",
-          "original": ">>Character1|Speaks|Critical<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character1",
+          "associatedValue": "Critical",
+          "original": ">>Character1|Critical<<",
           "text": "Wenn du nicht mit uns redest, können wir dir auch nicht helfen."
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "character_action_description",
-          "index": "Character2",
-          "action": "Speaks",
-          "expression": "Rejecting",
-          "original": ">>Character2|Speaks|Rejecting<<",
+          "type": "CHARACTER_ACTION",
+          "typeValue": "character2",
+          "associatedValue": "Rejecting",
+          "original": ">>Character2|Rejecting<<",
           "text": "Ja das sehe ich auch so. Dann bis zum nächsten mal."
         },
         {
-          "type": "--",
+          "type": "SEPARATOR",
+          "typeValue": "--",
           "original": ">>--<<"
         },
         {
-          "type": "end",
+          "type": "END",
+          "typeValue": "end",
           "original": ">>End<<"
         }
       ],

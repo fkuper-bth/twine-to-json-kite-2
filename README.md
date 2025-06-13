@@ -27,109 +27,47 @@ From within your story, set the story format to Twison. Choosing "Play" will now
 
 Kite 2 stories are essentially Harlowe 3.x flavoured stories with some extra features on top which in turn can be processed and interpreted to deliver visually appealing interactive visual novels by a visual novel engine.
 
-All custom tags that this format adds are enclosed within **double angle brackets**: `>>...<<`.
+All custom keywords that this format adds are enclosed within **double angle brackets**: `>>...<<`.
 
 
-### Currently supported tags
+### Currently supported pre-defined keywords
 
-- `>>CharacterName|AnimationName|FacialExpressionName<<`
-  - This tag describes a character's animation and facial expression.
-  - It will be associated automatically with any plain text that follows this tag.
-  - **example input**:
-    ```
-    >>Character1|Speaks|Smiling<<
-    Hello World!
-    ```
-  - **output**:
-    ```json
-    {
-        "type": "character_action_description",
-        "index": "Character1",
-        "action": "Speaks",
-        "expression": "Smiling",
-        "original": ">>Character1|Speaks|Smiling<<",
-        "text": "Hello World!"
-    }
-    ```
-- `>>Info<<`
-  - This tag denotes a message that denotes that the associated text should be interpreted as providing story context to the player and does not stem from a character within the story.
-  - It will be associated automatically with any plain text that follows this tag.
-  - **example input**:
-    ```
-    >>Info<<
-    This message could be used to give the player more context for the current situation.
-    ```
-  - **output**:
-    ```json
-    {
-        "type": "info",
-        "original": ">>Info<<",
-        "text": "This message could be used to give the player more context for the current situation."
-    }
-    ```
-- `>>Player<<`
-  - This tag denotes a message that should come from the player's character without requiring user interaction.
-  - **example input**:
-    ```
-    >>Player<<
-    Yes that's true.
-    ```
-  - **output**:
-    ```json
-    {
-        "type": "player",
-        "original": ">>Player<<",
-        "text": "Yes that's true."
-    }
-    ```
+There is a set of pre-defined keywords that are supported by this story format out of the box. The specification is part of the Kite 2 project and not currently publically available. 
+
+Here is a list of keywords that are currently supported out of the box:
+
 - `>>--<<`
-  - This tag is used to signify the end of a previously used tag.
-  - **example input**:
-    ```
-    >>--<<
-    ```
-  - **output**:
-    ```json
-    {
-        "type": "--",
-        "original": ">>--<<"
-    }
-    ```
-- `>>End<<`
-  - This tag denotes the end of the story.
-  - **example input**:
-    ```
-    >>End<<
-    ```
-  - **output**:
-    ```json
-    {
-        "type": "end",
-        "original": ">>End<<"
-    }
-    ```
+- `>>info<<`
+- `>>player<<`
+- `>>end<<`
+- `>>sound<<`
+- `>>bias<<`
+- `>>character<<`
 
 
-### Adding your own tags
+### Adding your own keywords
 
-You can also choose to add your own tags, which can in turn be interpreted by a visual novel engine.
+You can also choose to add your own keywords, which can in turn be interpreted by a visual novel engine.
 
-To add your own tag, simply follow this format: `>>TagTypeName|TagValue<<`.
+Also note that if you wish to add your own keywords, you should avoid using names already defined as part of the Kite 2 specification (see [this](#currently-supported-pre-defined-keywords) section).
 
-- **example tag**:
+To add your own keyword, simply follow this format: `>>KeywordTypeName|KeywordValue<<`.
+
+- **example keyword**:
     ```
-    >>Sound|TelephoneCall<<
+    >>animation|backflip<<
     ```
 - **output**:
     ```json
     {
-        "type": "sound",
-        "name": "TelephoneCall",
-        "original": ">>Sound|TelephoneCall<<"
+        "type": "CUSTOM",
+        "typeValue": "animation",
+        "name": "backflip",
+        "original": ">>animation|backflip<<"
     }
     ```
 
-This tag could be used to trigger sound effects.
+This keyword could be used to trigger an animation.
 
 
 ### Example stories
