@@ -94,9 +94,16 @@ function processPassageText(passageText, format) {
         const maybeCustomKeyword = extractCustomKeywordsAtIndex(passageText, currentIndex);
         if (maybeCustomKeyword) {
             currentIndex += maybeCustomKeyword.original.length;
-            const maybeAssociatedText = extractCustomKeywordAssociatedText(currentIndex, passageText);
-            if (maybeAssociatedText) {
-                maybeCustomKeyword.text = maybeAssociatedText;
+            if (maybeCustomKeyword.type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.CHARACTER_ACTION) ||
+                maybeCustomKeyword.type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.PLAYER_TEXT) ||
+                maybeCustomKeyword.type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.INFO_TEXT)
+            ) {
+                const maybeAssociatedText = extractCustomKeywordAssociatedText(currentIndex, passageText);
+                if (maybeAssociatedText) {
+                    maybeCustomKeyword.text = maybeAssociatedText;
+                } else {
+                    throw new Error('Keyword has no associated text: ' + maybeCustomKeyword.typeValue);
+                }
             }
             result.novelEvents.push(maybeCustomKeyword);
         }
@@ -139,17 +146,23 @@ function extractCustomKeywordsAtIndex(passageText, currentIndex) {
         if (customKeywordParts.length > 2) {
             throw new Error('Custom keyword has too many parts');
         }
-        if (customKeywordParts.length === 2) {
-            const typeValue = customKeywordParts[0].trim().toLowerCase();
-            const type = parseCustomKeywordType(typeValue);
-            const associatedValue = customKeywordParts[1].trim();
+        if (customKeywordParts.length === 0) {
+            throw new Error('Custom keyword is empty');
+        }
+        const typeValue = customKeywordParts[0].trim().toLowerCase();
+        const type = parseCustomKeywordType(typeValue);
 
+        if (customKeywordParts.length === 2) {
+            const associatedValue = customKeywordParts[1].trim();
             return { type: type, typeValue: typeValue, associatedValue: associatedValue, original: original };
         }
         if (customKeywordParts.length === 1) {
-            const typeValue = customKeywordParts[0].trim().toLowerCase();
-            const type = parseCustomKeywordType(typeValue);
-
+            if (type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.CHARACTER_ACTION) ||
+                type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.SOUND) ||
+                type === getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.BIAS)
+            ) {
+                throw new Error('Custom keyword of type ' + type + ' requires an associated value');
+            }
             return { type: type, typeValue: typeValue, original: original };
         }
     }
@@ -163,7 +176,7 @@ function parseCustomKeywordType(typeString) {
 
     // check if typestring start with the word 'character'
     if (typeString.startsWith(KITE2_KEYWORD_TYPES.CHARACTER_ACTION)) {
-        return 'CHARACTER_ACTION';
+        return getPropertyName(KITE2_KEYWORD_TYPES, (obj) => obj.CHARACTER_ACTION);
     }
 
     // check for other predefined keyword types
@@ -333,6 +346,19 @@ function getSubstringBetweenBrackets(string, startIndex, openBracket, closeBrack
         currentIndex += 1;
     }
     return substring;
+}
+
+/**
+ * Get the property name from an object using an expression.
+ * This is a utility function that allows you to extract a property name from an object.
+ * @param {*} obj The object to extract the property name from.
+ * @param {*} expression An expression that takes an object and returns the property name.
+ * @returns The property name extracted from the object as a string.
+ */
+function getPropertyName(obj, expression) {
+    var res = {};
+    Object.keys(obj).map(k => { res[k] = k; });
+    return expression(res);
 }
 
 window.twineToJSON = twineToJSON;
