@@ -12,7 +12,7 @@ This project was forked from [twine-to-json](https://github.com/jtschoonhoven/tw
 From the Twine 2 homescreen, select `Formats` and then `Add a New Format`. At the prompt, paste in the address below:
 
 ```
-https://fkuper.github.io/twine-to-json-kite-2/dist/format.js
+https://fkuper-bth.github.io/twine-to-json-kite-2/dist/format.js
 ```
 
 
